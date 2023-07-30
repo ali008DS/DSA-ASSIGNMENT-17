@@ -1,0 +1,30 @@
+def countSmaller(nums):
+    def merge_sort(arr, indices):
+        if len(arr) <= 1:
+            return arr
+
+        mid = len(arr) // 2
+        left = merge_sort(arr[:mid], indices[:mid])
+        right = merge_sort(arr[mid:], indices[mid:])
+        merged = []
+        l, r = 0, 0
+        count = 0
+
+        while l < len(left) and r < len(right):
+            if left[l] > right[r]:
+                merged.append(right[r])
+                r += 1
+                count += 1
+            else:
+                merged.append(left[l])
+                indices[indices.index(left[l])] += count
+                l += 1
+
+        merged.extend(left[l:])
+        merged.extend(right[r:])
+        return merged
+
+    sorted_indices = list(range(len(nums)))
+    merge_sort(nums, sorted_indices)
+    return [sorted_indices[i] for i in range(len(nums))]
+
